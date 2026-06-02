@@ -10,6 +10,7 @@
   body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.6;}
   .wrap{max-width:640px;margin:0 auto;padding:0 18px;}
   section{padding:34px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
   .tag{display:inline-block;color:var(--accent);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;font-weight:700;}
   h1{font-size:28px;line-height:1.2;margin-bottom:14px;}
   h1 b{color:var(--accent);}
@@ -24,12 +25,26 @@
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0;}
   .btn{display:block;background:var(--accent);color:#1a1a1a;font-weight:800;text-align:center;padding:17px;border-radius:12px;font-size:18px;margin:18px 0;text-decoration:none;}
   .hero{background:linear-gradient(180deg,#222,#1a1a1a);padding-top:46px;}
+  .hero-flex{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+  .hero-flex .hero-text{flex:1;min-width:240px;}
+  .hero-flex .hero-photo{flex:0 0 140px;}
+  .hero-flex .hero-photo img{width:140px;height:140px;border-radius:50%;object-fit:cover;border:3px solid var(--accent);}
   .price-box{background:#2e2a16;border:1px solid #5a521f;border-radius:14px;padding:20px;text-align:center;}
   .price-box .now{font-size:38px;font-weight:800;color:var(--accent);line-height:1;}
   .price-box .after{color:var(--muted);font-size:15px;margin-top:6px;}
-  .counter{color:var(--green);font-weight:700;font-size:15px;margin-top:8px;}
-  .stub{background:#2a2412;border:1px dashed #5a521f;border-radius:10px;padding:12px;font-size:13px;color:#e8e2cf;margin:12px 0;}
   .bridge{border-left:3px solid var(--accent);padding-left:14px;}
+  .quote{background:var(--card);border-left:3px solid var(--accent);border-radius:10px;padding:16px 18px;margin:14px 0;}
+  .quote p{margin:0 0 8px;font-size:15px;line-height:1.55;color:#e8e8e8;font-style:italic;}
+  .quote .author{display:block;color:var(--accent);font-size:13px;font-weight:700;font-style:normal;margin-top:4px;}
+  .review-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;}
+  .review-grid img{width:100%;border-radius:10px;border:1px solid var(--line);}
+  .author-box{display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap;}
+  .author-box .author-photo{flex:0 0 140px;}
+  .author-box .author-photo img{width:140px;height:160px;border-radius:12px;object-fit:cover;border:1px solid var(--line);}
+  .author-box .author-text{flex:1;min-width:240px;}
+  .author-box .author-text h3{font-size:20px;margin-bottom:6px;color:#fff;}
+  .author-box .author-text .role{color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;font-weight:700;}
+  .author-box .author-text a{color:var(--accent);text-decoration:none;}
   .foot{padding:24px 0;text-align:center;color:var(--muted);font-size:13px;}
 </style>
 </head>
@@ -37,9 +52,16 @@
 
 <section class="hero">
   <div class="wrap">
-    <span class="tag">Запись · доступ открыт</span>
-    <h1>Практикум по <b>Claude</b> — теперь в записи</h1>
-    <p class="lead">Три дня живых эфиров, по которым 84 человека собрали свою систему продаж на Claude и Chatplace. Та же программа — в записи, по цене одного обеда.</p>
+    <div class="hero-flex">
+      <div class="hero-text">
+        <span class="tag">Запись · доступ открыт</span>
+        <h1>Практикум по <b>Claude</b> — теперь в записи</h1>
+        <p class="lead">Три дня живых эфиров, по которым 84 человека собрали свою систему продаж на Claude и Chatplace. Та же программа — в записи, по цене одного обеда.</p>
+      </div>
+      <div class="hero-photo">
+        <img src="../photo-coffee.png" alt="Дулма Буянтуева">
+      </div>
+    </div>
     <a href="#price" class="btn">Забрать за 990 ₽ →</a>
     <p class="muted" style="font-size:13px">Первым 100 — 990 ₽. Дальше 1990 ₽.</p>
   </div>
@@ -70,18 +92,75 @@
   </div>
 </section>
 
+<section>
+  <div class="wrap">
+    <span class="tag">Отзывы</span>
+    <h2>Что говорят те, кто <b>прошёл</b></h2>
+
+    <div class="quote">
+      <p>«Хочу выразить огромную благодарность за такой ценный и полезный практикум. После обучения многое стало понятнее и структурнее. Я познакомилась с Claude и наконец разобралась, как грамотно использовать его в работе: создавать посты-карусели, настраивать чат-ботов, автоматизировать процессы через AI-агентов и выстраивать всё это в единую систему».</p>
+      <span class="author">— Baira, travel-агентство</span>
+    </div>
+
+    <div class="quote">
+      <p>«Огромная благодарность за курс и эфиры. Благодаря вам я села оцифровывать все продукты, до которых раньше не доходили руки. Трудоёмко, зато один раз сделала и забыла».</p>
+      <span class="author">— Анжелика Андреева</span>
+    </div>
+
+    <div class="quote">
+      <p>«Спасибо большое за этот интенсив! Давно хотела попробовать Claude, но не знала с какой стороны к нему подступиться. Теперь есть чёткие инструкции».</p>
+      <span class="author">— Regina</span>
+    </div>
+
+    <div class="quote">
+      <p>«Как же я собой довольна, что не стала откладывать этот практикум на потом — очень полезно и как раз то, что нужно было мне. Сейчас настраиваю скиллы под себя. Теперь понятно, как упростить и автоматизировать работу с блогами».</p>
+      <span class="author">— участница 2-го потока</span>
+    </div>
+
+    <div class="quote">
+      <p>«А вы знаете, как создавать агентов для внедрения в бизнес? Очень интересный курс. Спасибо вам».</p>
+      <span class="author">— Elena Kellerbauer</span>
+    </div>
+
+    <p class="muted" style="margin-top:18px;font-size:13.5px">Скрины из чатов потоков и Zoom-сессий — оригиналы ниже:</p>
+    <div class="review-grid">
+      <img src="reviews/review-baira.jpg" alt="Отзыв Baira">
+      <img src="reviews/review-blog-automation.jpg" alt="Отзыв про автоматизацию блогов">
+      <img src="reviews/review-anzhelika.jpg" alt="Отзыв Анжелика">
+      <img src="reviews/review-elena-kellerbauer.jpg" alt="Отзыв Elena Kellerbauer">
+      <img src="reviews/review-regina-katya.jpg" alt="Отзывы Regina и Katya">
+      <img src="reviews/review-mila-mydygma.jpg" alt="Отзывы Mila V и Мыдыгма">
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="tag">Кто я</span>
+    <div class="author-box">
+      <div class="author-photo">
+        <img src="../photo-white.png" alt="Дулма Буянтуева">
+      </div>
+      <div class="author-text">
+        <h3>Дулма Буянтуева</h3>
+        <div class="role">AI-практик · 2 потока практикума</div>
+        <p>Запустила 2 потока практикума по Claude и Chatplace, 84 ученика собрали свои системы продаж и автоворонки. Веду блоги <a href="https://www.instagram.com/dulmabuyantueva" target="_blank" rel="noopener">@dulmabuyantueva</a> (35k в IG) и <a href="https://t.me/dulmaAi" target="_blank" rel="noopener">@dulmaAi</a> (8k в Telegram) — там разборы реальных кейсов и работа с AI-агентами.</p>
+        <p class="muted" style="font-size:14px;margin-bottom:0">Запись практикума — самый дешёвый способ войти в мир Claude. Дальше — интенсив (старт 23 июня, для тех кто хочет вести за руку).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="price">
   <div class="wrap">
     <span class="tag">Цена</span>
     <div class="price-box">
       <div class="muted">Запись практикума · полный доступ</div>
       <div class="now">990 ₽</div>
-      <div class="after">для первых 100 · дальше — 1990 ₽</div>
-      <div class="counter">⚡ осталось мест по 990: <b>[счётчик]</b></div>
+      <div class="after">для первых 100 · дальше — 1 990 ₽</div>
     </div>
-    <div class="stub">⬇️ Кнопка оплаты Prodamus (germiona). После оплаты — автодоступ к записи + инвайт в закрытый чат.</div>
     <a href="https://payform.ru/mhbFWGH/" target="_blank" rel="noopener" class="btn">Забрать запись за 990 ₽</a>
-    <p class="muted" style="text-align:center;font-size:13px">Или напиши кодовое слово в бот — пришлёт доступ и ссылку.</p>
+    <p class="muted" style="text-align:center;font-size:13px">После оплаты — автодоступ к записям и приглашение в закрытый канал учеников.</p>
   </div>
 </section>
 
@@ -97,8 +176,7 @@
 
 <div class="foot">
   <div class="wrap">
-    Страница распродажи v1 · 02.06.2026 · фирмстиль · копи в TOV.<br>
-    Платёжка Prodamus + счётчик «осталось по 990» + кодовое слово — настраивает germiona. Адаптировать поверх claude.dulmabuyantueva.pro или залить отдельно — на оценке germiona.
+    Дулма Буянтуева · <a href="https://t.me/dulmabuyantueva" style="color:var(--accent)">@dulmabuyantueva</a> · <a href="https://www.instagram.com/dulmabuyantueva" style="color:var(--accent)">IG</a>
   </div>
 </div>
 
