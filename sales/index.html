@@ -33,9 +33,20 @@
   .price-box .now{font-size:38px;font-weight:800;color:var(--accent);line-height:1;}
   .price-box .after{color:var(--muted);font-size:15px;margin-top:6px;}
   .bridge{border-left:3px solid var(--accent);padding-left:14px;}
-  .quote{background:var(--card);border-left:3px solid var(--accent);border-radius:10px;padding:16px 18px;margin:14px 0;}
-  .quote p{margin:0 0 8px;font-size:15px;line-height:1.55;color:#e8e8e8;font-style:italic;}
+  .quote{background:var(--card);border-left:3px solid var(--accent);border-radius:10px;padding:18px 20px;margin:0;min-height:170px;}
+  .quote p{margin:0 0 10px;font-size:15.5px;line-height:1.6;color:#e8e8e8;font-style:italic;}
   .quote .author{display:block;color:var(--accent);font-size:13px;font-weight:700;font-style:normal;margin-top:4px;}
+  .slider{position:relative;margin:18px 0 8px;}
+  .slider-track{overflow:hidden;border-radius:10px;}
+  .slider-slides{display:flex;transition:transform .35s ease;}
+  .slider-slides > .quote{flex:0 0 100%;}
+  .slider-controls{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:12px;}
+  .slider-btn{background:var(--card);border:1px solid var(--line);color:var(--accent);font-size:18px;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 44px;transition:background .15s;}
+  .slider-btn:hover{background:var(--bg2);}
+  .slider-btn:disabled{opacity:.35;cursor:default;}
+  .slider-dots{display:flex;gap:8px;justify-content:center;flex:1;}
+  .slider-dot{width:8px;height:8px;border-radius:50%;background:var(--line);border:none;cursor:pointer;padding:0;transition:background .15s,transform .15s;}
+  .slider-dot.active{background:var(--accent);transform:scale(1.3);}
   .review-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;}
   .review-grid img{width:100%;border-radius:10px;border:1px solid var(--line);}
   .author-box{display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap;}
@@ -97,29 +108,36 @@
     <span class="tag">Отзывы</span>
     <h2>Что говорят те, кто <b>прошёл</b></h2>
 
-    <div class="quote">
-      <p>«Хочу выразить огромную благодарность за такой ценный и полезный практикум. После обучения многое стало понятнее и структурнее. Я познакомилась с Claude и наконец разобралась, как грамотно использовать его в работе: создавать посты-карусели, настраивать чат-ботов, автоматизировать процессы через AI-агентов и выстраивать всё это в единую систему».</p>
-      <span class="author">— Baira, travel-агентство</span>
-    </div>
-
-    <div class="quote">
-      <p>«Огромная благодарность за курс и эфиры. Благодаря вам я села оцифровывать все продукты, до которых раньше не доходили руки. Трудоёмко, зато один раз сделала и забыла».</p>
-      <span class="author">— Анжелика Андреева</span>
-    </div>
-
-    <div class="quote">
-      <p>«Спасибо большое за этот интенсив! Давно хотела попробовать Claude, но не знала с какой стороны к нему подступиться. Теперь есть чёткие инструкции».</p>
-      <span class="author">— Regina</span>
-    </div>
-
-    <div class="quote">
-      <p>«Как же я собой довольна, что не стала откладывать этот практикум на потом — очень полезно и как раз то, что нужно было мне. Сейчас настраиваю скиллы под себя. Теперь понятно, как упростить и автоматизировать работу с блогами».</p>
-      <span class="author">— участница 2-го потока</span>
-    </div>
-
-    <div class="quote">
-      <p>«А вы знаете, как создавать агентов для внедрения в бизнес? Очень интересный курс. Спасибо вам».</p>
-      <span class="author">— Elena Kellerbauer</span>
+    <div class="slider" id="reviewsSlider">
+      <div class="slider-track">
+        <div class="slider-slides">
+          <div class="quote">
+            <p>«Хочу выразить огромную благодарность за такой ценный и полезный практикум. После обучения многое стало понятнее и структурнее. Я познакомилась с Claude и наконец разобралась, как грамотно использовать его в работе: создавать посты-карусели, настраивать чат-ботов, автоматизировать процессы через AI-агентов и выстраивать всё это в единую систему».</p>
+            <span class="author">— Baira, travel-агентство</span>
+          </div>
+          <div class="quote">
+            <p>«Огромная благодарность за курс и эфиры. Благодаря вам я села оцифровывать все продукты, до которых раньше не доходили руки. Трудоёмко, зато один раз сделала и забыла».</p>
+            <span class="author">— Анжелика Андреева</span>
+          </div>
+          <div class="quote">
+            <p>«Спасибо большое за этот интенсив! Давно хотела попробовать Claude, но не знала с какой стороны к нему подступиться. Теперь есть чёткие инструкции».</p>
+            <span class="author">— Regina</span>
+          </div>
+          <div class="quote">
+            <p>«Как же я собой довольна, что не стала откладывать этот практикум на потом — очень полезно и как раз то, что нужно было мне. Сейчас настраиваю скиллы под себя. Теперь понятно, как упростить и автоматизировать работу с блогами».</p>
+            <span class="author">— участница 2-го потока</span>
+          </div>
+          <div class="quote">
+            <p>«А вы знаете, как создавать агентов для внедрения в бизнес? Очень интересный курс. Спасибо вам».</p>
+            <span class="author">— Elena Kellerbauer</span>
+          </div>
+        </div>
+      </div>
+      <div class="slider-controls">
+        <button class="slider-btn" id="sliderPrev" aria-label="Предыдущий">‹</button>
+        <div class="slider-dots" id="sliderDots"></div>
+        <button class="slider-btn" id="sliderNext" aria-label="Следующий">›</button>
+      </div>
     </div>
 
     <p class="muted" style="margin-top:18px;font-size:13.5px">Скрины из чатов потоков и Zoom-сессий — оригиналы ниже:</p>
@@ -179,6 +197,36 @@
     Дулма Буянтуева · <a href="https://t.me/dulmabuyantueva" style="color:var(--accent)">@dulmabuyantueva</a> · <a href="https://www.instagram.com/dulmabuyantueva" style="color:var(--accent)">IG</a>
   </div>
 </div>
+
+<script>
+(function(){
+  var slides = document.querySelectorAll('#reviewsSlider .slider-slides > .quote');
+  var track = document.querySelector('#reviewsSlider .slider-slides');
+  var prev = document.getElementById('sliderPrev');
+  var next = document.getElementById('sliderNext');
+  var dotsBox = document.getElementById('sliderDots');
+  if (!slides.length || !track) return;
+  var idx = 0;
+  for (var i = 0; i < slides.length; i++){
+    var dot = document.createElement('button');
+    dot.className = 'slider-dot';
+    dot.setAttribute('aria-label', 'Отзыв ' + (i + 1));
+    dot.dataset.idx = i;
+    dot.addEventListener('click', function(e){ idx = parseInt(e.currentTarget.dataset.idx, 10); render(); });
+    dotsBox.appendChild(dot);
+  }
+  function render(){
+    track.style.transform = 'translateX(' + (-idx * 100) + '%)';
+    prev.disabled = idx === 0;
+    next.disabled = idx === slides.length - 1;
+    var dots = dotsBox.querySelectorAll('.slider-dot');
+    for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('active', j === idx);
+  }
+  prev.addEventListener('click', function(){ if (idx > 0){ idx--; render(); } });
+  next.addEventListener('click', function(){ if (idx < slides.length - 1){ idx++; render(); } });
+  render();
+})();
+</script>
 
 </body>
 </html>
