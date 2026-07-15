@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Интенсив «AI-команда на Claude» — собери команду агентов за 4 недели</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --soft:#faf7ee;
+    --ink:#141414;
+    --muted:#6b665c;
+    --dark:#0d0d0d;
+    --dark2:#141414;
+    --gold:#E8B923;
+    --gold2:#F7D14B;
+    --golddark:#9c7a00;
+    --line:#efe9d8;
+    --green:#2e9e54;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  h1,h2,h3{line-height:1.08;font-weight:800;letter-spacing:-.01em}
+  /* акцентное слово на СВЕТЛОМ фоне — жёлтый маркер-подсветка (читается) */
+  i.g{font-style:italic;background:linear-gradient(transparent 58%, rgba(247,209,75,.62) 58%);padding:0 2px}
+  /* акцентное слово на ТЁМНОМ фоне (hero/финал) — яркий жёлтый текст */
+  .hero-bg i.g,.final-bg i.g{background:linear-gradient(110deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding:0}
+  .arr{color:var(--gold)}
+
+  /* buttons */
+  .btn{display:inline-block;background:linear-gradient(110deg,var(--gold2),var(--gold));color:#141414;font-weight:800;font-size:17px;letter-spacing:.04em;text-transform:uppercase;padding:18px 40px;border-radius:999px;text-decoration:none;border:none;cursor:pointer;transition:.15s;box-shadow:0 8px 26px rgba(232,185,35,.4)}
+  .btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
+  .btn-ghost{display:inline-block;background:transparent;color:var(--ink);border:1.5px solid #ddd6c4;font-weight:700;font-size:15px;padding:15px 28px;border-radius:999px;text-decoration:none}
+  .btn-ghost.lite{color:#fff;border-color:rgba(255,255,255,.35)}
+
+  .photo-slot{background:linear-gradient(160deg,#241f10,#14110a);border:1px solid rgba(232,185,35,.25);border-radius:22px;display:flex;align-items:center;justify-content:center;color:#8a7f63;font-size:14px;min-height:340px;text-align:center;padding:20px}
+  .ph{width:100%;height:100%;min-height:340px;object-fit:cover;border-radius:22px;display:block}
+
+  /* HERO (dark) */
+  .hero-bg{background:radial-gradient(120% 130% at 80% 0%,#221c0a 0%,var(--dark2) 45%,var(--dark) 100%)}
+  .hero{padding:60px 0 64px;display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:center;color:#fff}
+  .hero .kicker{color:var(--gold);font-weight:800;letter-spacing:2px;text-transform:uppercase;font-size:13px;margin-bottom:18px}
+  .hero h1{font-size:52px;color:#fff;margin-bottom:22px}
+  .hero p.lead{font-size:18px;color:#c7c2b6;margin-bottom:30px;max-width:520px}
+  .hero .info{display:flex;gap:34px;border-top:1px solid rgba(255,255,255,.14);padding-top:20px;margin-bottom:28px;flex-wrap:wrap}
+  .hero .info .lbl{color:#8e887b;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px}
+  .hero .info .val{font-size:20px;font-weight:800;color:#fff}
+  .hero .photo-slot{min-height:420px}
+
+  section{padding:56px 0}
+  .sec-h{font-size:38px;margin-bottom:10px}
+  .sec-sub{color:var(--muted);font-size:18px;margin-bottom:34px}
+
+  /* для кого */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .card{background:var(--soft);border:1px solid var(--line);border-radius:22px;padding:30px}
+  .card h3{font-size:22px;margin-bottom:16px}
+  .card ul{list-style:none}
+  .card li{padding:9px 0 9px 30px;position:relative;font-size:16px;color:#3a3833}
+  .card.yes li:before{content:'';position:absolute;left:0;top:11px;width:18px;height:18px;border-radius:50%;background:linear-gradient(110deg,var(--gold2),var(--gold))}
+  .card.yes li:after{content:'✓';position:absolute;left:4px;top:9px;color:#141414;font-size:11px;font-weight:800}
+  .card.no li:before{content:'✕';position:absolute;left:3px;color:#c4bfb2;font-weight:800;font-size:15px}
+
+  /* программа — карточки с номер-панелью */
+  .week-h{font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:13px;margin:30px 0 14px;color:var(--golddark)}
+  .les{display:grid;grid-template-columns:200px 1fr;background:#fff;border:1.5px solid var(--line);border-radius:22px;overflow:hidden;margin-bottom:16px}
+  .les .np{background:linear-gradient(165deg,#1c1810,#0d0d0d);padding:26px 24px;display:flex;flex-direction:column;justify-content:space-between;min-height:150px}
+  .les .np .big{font-size:40px;font-weight:800;background:linear-gradient(120deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+  .les .np .when{color:var(--gold);font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-top:14px}
+  .les .ct{padding:24px 28px}
+  .les h3{font-size:21px;margin-bottom:6px}
+  .les .micro{color:#a39d8f;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px}
+  .les p{color:var(--muted);font-size:15.5px}
+  .les .res{display:inline-block;margin-top:12px;color:var(--green);font-weight:700;font-size:14.5px}
+  .les.live .np{background:linear-gradient(165deg,#2a2410,#120f08)}
+  .les.live .big{font-size:30px}
+
+  /* отличие */
+  .vs{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--line);border-radius:22px;overflow:hidden}
+  .vs .col{padding:28px}
+  .vs .col.you{background:linear-gradient(160deg,#fffae8,#fff)}
+  .vs .col.you h3 span{color:var(--golddark)}
+  .vs .col h3{font-size:19px;margin-bottom:16px}
+  .vs .col li{list-style:none;padding:7px 0 7px 24px;position:relative;font-size:15px;color:#3a3833}
+  .vs .col.you li:before{content:'●';position:absolute;left:2px;color:#C9920A;font-size:10px;top:10px}
+  .vs .col.them{border-left:1px solid var(--line)}
+  .vs .col.them li{color:#8b8678}
+  .vs .col.them li:before{content:'○';position:absolute;left:2px;color:#bdb8aa;font-size:10px;top:10px}
+
+  /* цена */
+  .price-bg{background:radial-gradient(120% 120% at 50% 0%,#221c0a,var(--dark) 70%);border-radius:30px;padding:54px 36px;text-align:center;color:#fff;max-width:620px;margin:0 auto}
+  .price-bg .tier{color:var(--gold);font-weight:800;letter-spacing:1.5px;text-transform:uppercase;font-size:13px;margin-bottom:14px}
+  .price-bg .old{color:#7d7868;text-decoration:line-through;font-size:24px;font-weight:700}
+  .price-bg .now{font-size:62px;font-weight:800;margin:2px 0 8px}
+  .price-bg .deadline{color:var(--gold2);font-weight:700;font-size:15px;margin-bottom:26px}
+  .price-bg ul{list-style:none;text-align:left;max-width:420px;margin:0 auto 30px}
+  .price-bg li{padding:9px 0 9px 32px;position:relative;font-size:16px;color:#ece8df}
+  .price-bg li:before{content:'';position:absolute;left:0;top:9px;width:19px;height:19px;border-radius:50%;background:linear-gradient(110deg,var(--gold2),var(--gold))}
+  .price-bg li:after{content:'✓';position:absolute;left:4px;top:7px;color:#141414;font-size:12px;font-weight:800}
+  .pay-note{color:#8e887b;font-size:13px;margin-top:18px}
+
+  /* гарантия */
+  .guarantee{background:linear-gradient(160deg,#fffae8,#fff);border:1.5px solid #f1e3a6;border-radius:22px;padding:30px 32px;display:flex;gap:20px;align-items:flex-start}
+  .guarantee .ic{font-size:36px}
+  .guarantee h3{font-size:20px;margin-bottom:8px}
+  .guarantee p{color:#5c564c;font-size:15.5px}
+
+  /* таймер */
+  .timer-wrap{max-width:560px;margin:0 auto 30px;text-align:center}
+  .timer-lbl{color:var(--golddark);font-weight:800;text-transform:uppercase;letter-spacing:1.5px;font-size:13px;margin-bottom:14px}
+  .timer{display:flex;gap:12px;justify-content:center}
+  .tcell{background:linear-gradient(165deg,#1c1810,#0d0d0d);border-radius:14px;padding:14px 0;min-width:76px}
+  .tcell .tn{font-size:36px;font-weight:800;background:linear-gradient(120deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+  .tcell .tl{color:#8e887b;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-top:7px}
+
+  /* раньше/сейчас */
+  .beforeafter{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--line);border-radius:22px;overflow:hidden}
+  .ba{padding:30px}
+  .ba.before{background:var(--soft)}
+  .ba.after{background:linear-gradient(160deg,#fffae8,#fff);border-left:1px solid var(--line)}
+  .ba h3{font-size:19px;margin-bottom:4px}
+  .ba .cap{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:16px;font-weight:800}
+  .ba.before .cap{color:#a39d8f}
+  .ba.after .cap{color:var(--golddark)}
+  .ba ul{list-style:none}
+  .ba li{padding:10px 0;font-size:15px;border-bottom:1px solid rgba(0,0,0,.06);color:#3a3833}
+  .ba li:last-child{border-bottom:none}
+  .ba li b{color:var(--ink)}
+  .ba .sum{margin-top:16px;font-weight:800;font-size:16px}
+  .ba.before .sum{color:#8b8678}
+  .ba.after .sum{color:var(--golddark)}
+
+  /* после интенсива */
+  .after-list{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ai{display:flex;gap:14px;align-items:flex-start;background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+  .ai .ic{font-size:24px;line-height:1.2}
+  .ai p{font-size:15.5px;color:#3a3833}
+  .ai p b{color:var(--ink)}
+
+  /* боль */
+  .pain{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center}
+  .pain p{color:#4a463d;font-size:17px}
+
+  /* отзывы — слайдер */
+  .slider{max-width:580px;margin:0 auto;text-align:center}
+  .slides{position:relative;background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px;min-height:300px;display:flex;align-items:center;justify-content:center}
+  .slide{display:none;max-width:100%;max-height:540px;border-radius:12px}
+  .slide.active{display:block}
+  .slider-nav{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:20px}
+  .snav{width:48px;height:48px;border-radius:50%;border:none;background:linear-gradient(110deg,var(--gold2),var(--gold));color:#141414;font-size:21px;font-weight:800;cursor:pointer;box-shadow:0 6px 18px rgba(232,185,35,.32)}
+  .snav:hover{filter:brightness(1.06)}
+  .scount{font-size:15px;font-weight:700;color:var(--muted);min-width:54px}
+
+  /* автор */
+  .author{display:grid;grid-template-columns:.85fr 1.15fr;gap:36px;align-items:center}
+  .author .stats{display:flex;gap:32px;margin:18px 0;flex-wrap:wrap}
+  .author .stats .n{font-size:34px;font-weight:800;color:var(--golddark)}
+  .author .stats .l{font-size:13px;color:var(--muted)}
+  .author p{color:#3a3833;font-size:16px}
+
+  /* faq */
+  details{border-bottom:1px solid var(--line);padding:18px 0}
+  summary{font-size:17px;font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary:after{content:'+';color:#C9920A;font-size:26px;font-weight:800}
+  details[open] summary:after{content:'–'}
+  details p{color:var(--muted);font-size:15.5px;margin-top:10px}
+
+  /* финал */
+  .final-bg{background:radial-gradient(120% 130% at 50% 0%,#221c0a,var(--dark) 70%);border-radius:30px;padding:60px 36px;text-align:center;color:#fff}
+  .final-bg h2{font-size:40px;margin-bottom:16px;color:#fff}
+  .final-bg p{color:#c7c2b6;font-size:18px;margin-bottom:30px}
+
+  footer{padding:46px 0;color:#9a958a;font-size:13px;text-align:center;line-height:1.8}
+
+  @media(max-width:780px){
+    .hero{grid-template-columns:1fr;gap:28px;padding:40px 0 44px}
+    .hero h1{font-size:38px}
+    .two,.vs,.author,.pain,.beforeafter,.after-list{grid-template-columns:1fr}
+    .ba.after{border-left:none;border-top:1px solid var(--line)}
+    .timer .tcell{min-width:64px}
+    .tcell .tn{font-size:30px}
+    .vs .col.them{border-left:none;border-top:1px solid var(--line)}
+    .les{grid-template-columns:1fr}
+    .les .np{flex-direction:row;align-items:center;gap:16px;min-height:auto}
+    .les .np .when{margin-top:0}
+    .sec-h{font-size:29px}
+    .hero h1,.final-bg h2{font-size:34px}
+    .price-bg .now{font-size:48px}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero-bg">
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <div class="kicker">Интенсив · старт 3 августа</div>
+        <h1>Собери <i class="g">команду</i> AI-агентов <span class="arr">→</span> за 4 недели</h1>
+        <p class="lead">Не «ещё один курс про нейросети». За 4 недели соберёшь агентов, которые сами ведут контент, отвечают клиентам и держат воронку — пока ты в своём деле. Без кода. По шагам.</p>
+        <div class="info">
+          <div><div class="lbl">Старт</div><div class="val">3 августа</div></div>
+          <div><div class="lbl">Формат</div><div class="val">3 пути: предобучение → база → продвинутый трек + 3 Zoom</div></div>
+          <div><div class="lbl">Цена</div><div class="val"><s style="color:#7d7868;font-weight:600;font-size:15px;margin-right:4px">34 990</s>28 990 ₽</div></div>
+        </div>
+        <a href="https://payform.ru/mrbKtEd/" target="_blank" rel="noopener" class="btn">Занять место</a>
+      </div>
+      <img src="hero.jpg" class="ph" style="min-height:440px" alt="Дулма Буянтуева">
+    </div>
+  </div>
+</div>
+
+<!-- БОЛЬ -->
+<section class="wrap">
+  <div class="pain">
+    <div>
+      <h2 class="sec-h">Узнаёшь <i class="g">себя?</i></h2>
+      <p>Контент сам себя не напишет. Сообщения копятся. Лиды теряются в переписке. Ты — и копирайтер, и СММщик, и менеджер, и поддержка одновременно. Рутина съедает день, а на главное — продукт и клиентов — не остаётся сил.</p>
+      <p style="margin-top:14px;font-weight:700;color:var(--ink)">Это лечится. Не наймом ещё одного человека — а командой агентов, которая берёт рутину на себя. У меня такая работает. Покажу, как собрать твою.</p>
+    </div>
+    <img src="routine.jpg" class="ph" style="min-height:320px" alt="">
+  </div>
+</section>
+
+<!-- ДЛЯ КОГО -->
+<section class="wrap">
+  <h2 class="sec-h">Для кого <i class="g">этот интенсив</i></h2>
+  <p class="sec-sub">Честно — кому зайдёт, а кому нет.</p>
+  <div class="two">
+    <div class="card yes">
+      <h3>Подойдёт тебе</h3>
+      <ul>
+        <li>Ты эксперт, блогер или предприниматель — и тонешь в рутине: контент, ответы, воронка</li>
+        <li>Ты НЕ программист и боишься, что «это сложно» — идём по шагам, без кода</li>
+        <li>Пробовал нейросети, но всё осталось «поигрался и забросил»</li>
+        <li>Хочешь не один навык, а систему, которая работает за тебя</li>
+        <li>Готов 4 недели делать руками вместе со мной на Zoom</li>
+      </ul>
+    </div>
+    <div class="card no">
+      <h3>Не подойдёт</h3>
+      <ul>
+        <li>Ищешь «волшебную кнопку» без участия — собирать придётся самому (я рядом)</li>
+        <li>Не готов выделить пару часов в неделю на практику</li>
+        <li>Нужен бот «под ключ» без понимания, как он устроен</li>
+        <li>Ждёшь, что ИИ заменит тебя — нет, он берёт рутину, ты остаёшься в деле</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ПРОГРАММА -->
+<section class="wrap" id="program">
+  <h2 class="sec-h">Программа: <i class="g">3 пути от нуля до команды</i></h2>
+  <p class="sec-sub">Идёшь по шагам: подготовка → база → продвинутый уровень. На каждом этапе — живой Zoom, где вместе чиним затыки. Программа постоянно дополняется — ты получаешь свежие материалы.</p>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="week-h" style="margin-top:0">🟡 Путь 1 · Подготовка — фундамент</div>
+    <h3 style="font-size:20px;margin-bottom:8px">Заходишь в тему без страха и технических затыков</h3>
+    <p style="color:var(--muted);font-size:15.5px">Как быстро учиться с помощью самого AI, какие бывают модели и какую подписку брать, регистрация Claude из России (VPN, оплата), чем агент отличается от чата и как им управлять.</p>
+    <span class="res" style="display:inline-block;margin-top:10px;color:var(--green);font-weight:700;font-size:14.5px">→ Ты готов к старту, всё установлено и понятно</span>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="week-h" style="margin-top:0">🟢 Путь 2 · База — твой первый агент и команда</div>
+    <h3 style="font-size:20px;margin-bottom:8px">Собираешь живого агента и превращаешь его в команду</h3>
+    <p style="color:var(--muted);font-size:15.5px">Первый агент отвечает в Telegram. Даёшь ему личность и память — он звучит как ты и помнит контекст. Подключаешь навыки под задачи. Добавляешь второго агента и связываешь их общей памятью — помощники становятся командой. Записи + живые Zoom, где чиним затыки у каждого.</p>
+    <span class="res" style="display:inline-block;margin-top:10px;color:var(--green);font-weight:700;font-size:14.5px">→ Рабочая мини-команда агентов: отвечает, помнит, помогает</span>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="week-h" style="margin-top:0">🔵 Путь 3 · Продвинутый — полная AI-команда 24/7</div>
+    <h3 style="font-size:20px;margin-bottom:8px">Команда работает круглосуточно и без привязки к одному сервису</h3>
+    <p style="color:var(--muted);font-size:15.5px">Выносишь агентов на сервер — работают 24/7 без твоего компьютера. Подключаешь сервисы (календарь, почта, GitHub). Ставишь другие мозги: Codex-ревьюер, Hermes с GPT по подписке или дешёвыми моделями — гибкость и экономия. Общий мозг команды (G-Brain) с умным поиском по смыслу. Записи + живые эфиры.</p>
+    <span class="res" style="display:inline-block;margin-top:10px;color:var(--green);font-weight:700;font-size:14.5px">→ Полноценная AI-команда на автопилоте, под твоим контролем</span>
+  </div>
+
+  <p style="color:var(--muted);font-size:15px;margin-top:20px">🎁 <b style="color:var(--ink)">Бонус:</b> библиотека готовых шаблонов агентов и скиллов под ниши. Реальные расходы ученика — от 5–10 тыс ₽/мес: VPN на сервере + подписка Claude / ChatGPT ($20–100). Вместо штата специалистов за сотни тысяч.</p>
+</section>
+
+<!-- ЧТО НА ВЫХОДЕ -->
+<section class="wrap">
+  <h2 class="sec-h">Что у тебя <i class="g">на выходе</i></h2>
+  <p class="sec-sub">Не «посмотрел уроки», а готовые работающие агенты — и навык собрать любого нового.</p>
+  <div class="after-list">
+    <div class="ai"><div class="ic">💻</div><p><b>Агент-кодер.</b> Пишет и правит код, делает сайты и лендинги, ставит сервисы, ведёт платформу.</p></div>
+    <div class="ai"><div class="ic">📣</div><p><b>Агент-маркетолог.</b> Посты и сценарии рилсов в твоём стиле, контент-план, разбор конкурентов.</p></div>
+    <div class="ai"><div class="ic">🎓</div><p><b>Агент-куратор.</b> Отвечает клиентам и ученикам по твоей базе знаний — 24/7, без тебя.</p></div>
+    <div class="ai"><div class="ic">🗓️</div><p><b>Агент-ассистент.</b> Расписание, напоминания, разбор входящего, план дня.</p></div>
+  </div>
+  <div style="background:radial-gradient(120% 130% at 50% 0%,#221c0a,#0d0d0d 70%);border-radius:22px;padding:30px 32px;margin-top:18px;color:#fff">
+    <h3 style="font-size:22px;color:#fff;margin-bottom:10px">И главное — ты умеешь собрать <i class="g">любого своего</i> агента</h3>
+    <p style="color:#c7c2b6;font-size:16px">Финальный урок даёт рецепт, по которому ты соберёшь агента под ЛЮБУЮ задачу — себе или на продажу клиенту: бриф → бот → личность (CLAUDE.md) → навыки и знания → запуск. Хочешь финансиста, продажника, поддержку под свою нишу — собираешь сам за вечер. Это уже не обучение, а твой новый навык, на котором можно зарабатывать.</p>
+  </div>
+</section>
+
+<!-- ПРОГРАММА-СТАРОЕ (скрыто) -->
+<section class="wrap" style="display:none">
+  <div class="week-h">📚 Предобучение — готовимся к старту (4 урока)</div>
+  <div class="les">
+    <div class="np"><div class="big">П1</div><div class="when">Запись</div></div>
+    <div class="ct"><h3>Как учиться вместе с AI</h3><div class="micro">к концу урока у тебя</div>
+      <p>AI как репетитор 24/7: как задавать вопросы и учиться быстро с помощью самого AI.</p>
+      <span class="res">→ Учишься в разы быстрее</span></div>
+  </div>
+  <div class="les">
+    <div class="np"><div class="big">П2</div><div class="when">Запись</div></div>
+    <div class="ct"><h3>Рынок моделей и подписки</h3><div class="micro">к концу урока у тебя</div>
+      <p>Какие бывают модели (Opus / Sonnet / Haiku) и какую подписку брать — чтобы не переплатить.</p>
+      <span class="res">→ Знаешь, что брать без лишних трат</span></div>
+  </div>
+  <div class="les">
+    <div class="np"><div class="big">П3</div><div class="when">Запись</div></div>
+    <div class="ct"><h3>Регистрация Claude из России</h3><div class="micro">к концу урока у тебя</div>
+      <p>VPN, почта, способы оплаты — всё по шагам, чтобы спокойно оформить доступ.</p>
+      <span class="res">→ Доступ к Claude оформлен</span></div>
+  </div>
+  <div class="les">
+    <div class="np"><div class="big">П4</div><div class="when">Запись</div></div>
+    <div class="ct"><h3>Что такое агент + базовый промптинг</h3><div class="micro">к концу урока у тебя</div>
+      <p>Чем агент отличается от чата на глубине и как правильно ставить ему задачи.</p>
+      <span class="res">→ Понимаешь, что строишь и как управлять</span></div>
+  </div>
+
+  <div class="week-h">🟢 Основные уроки — собираешь агента и команду (5 уроков)</div>
+  <div class="les">
+    <div class="np"><div class="big">У1</div><div class="when">Запись</div></div>
+    <div class="ct"><h3>Первый агент в Telegram</h3><div class="micro">к концу урока у тебя</div>
+      <p>Ставишь движок, клонируешь готовый репозиторий, вписываешь токен — живой агент отвечает в Telegram. Выбор: на компьютере или на сервере 24/7.</p>
+      <span class="res">→ Рабочий агент в твоём Telegram</span></div>
+  </div>
+  <div class="les live">
+    <div class="np"><div class="big">Zoom 1</div><div class="when">Живой</div></div>
+    <div class="ct"><h3>🔴 Запускаем вместе</h3>
+      <p>Проходим запуск в прямом эфире, у каждого чиним свои затыки. К концу у всех агент отвечает.</p></div>
+  </div>
+  <div class="les">
+    <div class="np"><div class="big">У2</div><div class="when">Запись</div></div>
+    <div class="ct"><h3>Личность и память (CLAUDE.md)</h3><div class="micro">к концу урока у тебя</div>
+      <p>Задаёшь агенту характер, тон и правила — чтобы звучал как ты. Как устроена память.</p>
+      <span class="res">→ Агент звучит твоим голосом и помнит контекст</span></div>
+  </div>
+  <div class="les">
+    <div class="np"><div class="big">У3</div><div class="when">Запись</div></div>
+    <div class="ct"><h3>Навыки (скиллы)</h3><div class="micro">к концу урока у тебя</div>
+      <p>Ставим готовые сильные навыки и учим агента применять их сам — по смыслу задачи.</p>
+      <span class="res">→ Агент умеет конкретные задачи</span></div>
+  </div>
+  <div class="les live">
+    <div class="np"><div class="big">Zoom 2</div><div class="when">Живой</div></div>
+    <div class="ct"><h3>🔴 Под нишу каждого</h3>
+      <p>Настраиваем личность и навыки под нишу каждого, разбираем случаи.</p></div>
+  </div>
+  <div class="les">
+    <div class="np"><div class="big">У4</div><div class="when">Запись</div></div>
+    <div class="ct"><h3>Второй мозг — общая память команды</h3><div class="micro">к концу урока у тебя</div>
+      <p>Связываешь агентов общей памятью: что узнал один — знают все. Это превращает помощников в команду.</p>
+      <span class="res">→ Команда с общим мозгом</span></div>
+  </div>
+  <div class="les">
+    <div class="np"><div class="big">У5</div><div class="when">Запись</div></div>
+    <div class="ct"><h3>Второй агент и своя AI-команда</h3><div class="micro">к концу урока у тебя</div>
+      <p>Добавляешь второго агента со своей ролью — например, маркетолога. Помощники становятся командой.</p>
+      <span class="res">→ Мини-команда из 2 агентов</span></div>
+  </div>
+  <div class="les live">
+    <div class="np"><div class="big">Zoom 3</div><div class="when">Живой</div></div>
+    <div class="ct"><h3>🔴 Команда + дожим</h3>
+      <p>Доводим до мини-команды, разбираем кейсы, отвечаю на всё. Финал базы.</p></div>
+  </div>
+
+  <div class="week-h">🔵 Продвинутый трек — полная AI-команда (6 уроков) · записи + живые эфиры</div>
+  <div class="les">
+    <div class="np"><div class="big">+1</div><div class="when">Запись + эфир</div></div>
+    <div class="ct"><h3>VPS-сервер: агент 24/7</h3><div class="micro">к концу урока у тебя</div>
+      <p>Арендуешь сервер — агент работает круглосуточно сам, без твоего компьютера.</p>
+      <span class="res">→ Агент онлайн 24/7</span></div>
+  </div>
+  <div class="les">
+    <div class="np"><div class="big">+2</div><div class="when">Запись + эфир</div></div>
+    <div class="ct"><h3>Настоящий Second Brain (gbrain)</h3><div class="micro">к концу урока у тебя</div>
+      <p>Общая память с умным поиском по смыслу — как у больших команд.</p>
+      <span class="res">→ Память масштабируется на тысячи заметок</span></div>
+  </div>
+  <div class="les">
+    <div class="np"><div class="big">+3</div><div class="when">Запись + эфир</div></div>
+    <div class="ct"><h3>Рой агентов и координация</h3><div class="micro">к концу урока у тебя</div>
+      <p>Агенты передают задачи друг другу и работают как отдел.</p>
+      <span class="res">→ Один запрос — рой делает</span></div>
+  </div>
+  <div class="les">
+    <div class="np"><div class="big">+4</div><div class="when">Запись + эфир</div></div>
+    <div class="ct"><h3>Автономия: команда работает сама</h3><div class="micro">к концу урока у тебя</div>
+      <p>Расписание и хуки — агенты работают сами, без твоего участия.</p>
+      <span class="res">→ AI-команда на автопилоте</span></div>
+  </div>
+  <div class="les">
+    <div class="np"><div class="big">+5</div><div class="when">Запись + эфир</div></div>
+    <div class="ct"><h3>Альтернатива: Hermes + GPT/китайские модели</h3><div class="micro">к концу урока у тебя</div>
+      <p>Агент на других, более дешёвых моделях — гибкость и экономия.</p>
+      <span class="res">→ Команда без привязки к одному провайдеру</span></div>
+  </div>
+  <div class="les">
+    <div class="np"><div class="big">+6</div><div class="when">Запись + эфир</div></div>
+    <div class="ct"><h3>Как зарабатывать на AI-агентах</h3><div class="micro">к концу урока у тебя</div>
+      <p>5 рабочих ниш и первый шаг к доходу на этом навыке.</p>
+      <span class="res">→ План монетизации</span></div>
+  </div>
+
+  <p style="color:var(--muted);font-size:15px;margin-top:20px">🎁 <b style="color:var(--ink)">Бонус:</b> библиотека готовых шаблонов агентов и скиллов под ниши. Реальные расходы ученика — от 5–10 тыс ₽/мес: VPN на сервере + подписка Claude / ChatGPT ($20–100). Вместо штата специалистов за сотни тысяч.</p>
+</section>
+
+<!-- ОТЛИЧИЕ -->
+<section class="wrap">
+  <h2 class="sec-h">Почему не <i class="g">«дешёвый воркшоп»</i></h2>
+  <p class="sec-sub">Курсов «соберите бота» много. Разница — в результате и сопровождении.</p>
+  <div class="vs">
+    <div class="col you">
+      <h3><span>Этот интенсив</span></h3>
+      <ul>
+        <li>3 живых Zoom — собираем вместе, чиним твои затыки лично</li>
+        <li>Не один бот, а мини-команда агентов под твою нишу</li>
+        <li>Готовый репозиторий — клонируешь и запускаешь, без сборки с нуля</li>
+        <li>Память + смена движка: агент переживёт блокировки и не забывает</li>
+        <li>Гарантия: к концу — минимум 1 рабочий агент</li>
+      </ul>
+    </div>
+    <div class="col them">
+      <h3>Обычный воркшоп</h3>
+      <ul>
+        <li>Запись «посмотри сам», без живого разбора</li>
+        <li>Один шаблонный бот «для всех»</li>
+        <li>«Соберите с нуля» — половина бросает на первой ошибке</li>
+        <li>Без памяти и страховки движка</li>
+        <li>Результат — как повезёт</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- РАНЬШЕ / СЕЙЧАС -->
+<section class="wrap">
+  <h2 class="sec-h">Раньше и <i class="g">сейчас</i></h2>
+  <p class="sec-sub">Та же работа. Только раньше — штат специалистов, сейчас — твоя команда агентов.</p>
+  <div class="beforeafter">
+    <div class="ba before">
+      <h3>Раньше</h3>
+      <div class="cap">нанимаешь людей</div>
+      <ul>
+        <li>Сайт / лендинг — техспец <b>50–100 000 ₽</b></li>
+        <li>Презентация — дизайнер <b>30–50 000 ₽</b></li>
+        <li>Контент и посты — SMM-щик <b>30–50 000 ₽/мес</b></li>
+        <li>Ответы клиентам — менеджер <b>40–60 000 ₽/мес</b></li>
+      </ul>
+      <div class="sum">→ Сотни тысяч в месяц + найм, контроль, больничные</div>
+    </div>
+    <div class="ba after">
+      <h3>Сейчас</h3>
+      <div class="cap">собираешь команду агентов</div>
+      <ul>
+        <li>Сайт, презентация, посты, ответы — делает <b>твоя команда агентов</b></li>
+        <li>Расход — от <b>5–10 тыс ₽/мес</b> (VPN + подписка $20–100)</li>
+        <li>Работает 24/7, не болеет, не увольняется</li>
+        <li>Всё под твоим контролем и в твоём голосе</li>
+      </ul>
+      <div class="sum">→ Та же работа — за копейки, и собираешь сам за 4 недели</div>
+    </div>
+  </div>
+</section>
+
+<!-- ПОСЛЕ ИНТЕНСИВА -->
+<section class="wrap">
+  <h2 class="sec-h">Что меняется <i class="g">после интенсива</i></h2>
+  <p class="sec-sub">Через 4 недели у тебя не «знания про ИИ», а работающая система.</p>
+  <div class="after-list">
+    <div class="ai"><div class="ic">📝</div><p><b>Контент выходит без тебя.</b> Агент смотрит тренды, пишет посты и сценарии в твоём голосе.</p></div>
+    <div class="ai"><div class="ic">💬</div><p><b>Клиентам отвечают 24/7.</b> Типовые вопросы, запись, напоминания — на агенте, никто не теряется.</p></div>
+    <div class="ai"><div class="ic">🎯</div><p><b>Воронка работает на автомате.</b> Лид-магнит, кодовое слово, прогрев — собирают базу, пока ты спишь.</p></div>
+    <div class="ai"><div class="ic">🧠</div><p><b>Команда помнит контекст.</b> Общая память — не объясняешь одно и то же каждый день.</p></div>
+    <div class="ai"><div class="ic">🛡️</div><p><b>Не зависишь от одного сервиса.</b> Заблокируют один движок — переключаешь на другой одной строкой.</p></div>
+    <div class="ai"><div class="ic">🚀</div><p><b>Ты — в своём деле.</b> Рутина на агентах, у тебя — продукт, клиенты и рост.</p></div>
+  </div>
+</section>
+
+<!-- ОТЗЫВЫ -->
+<section class="wrap">
+  <h2 class="sec-h">Что говорят <i class="g">выпускники</i></h2>
+  <p class="sec-sub">400+ человек уже прошли обучение — вот их результаты.</p>
+  <div class="slider">
+    <div class="slides">
+      <img src="review1.jpg" class="slide active" alt="отзыв выпускника">
+      <img src="review2.jpg" class="slide" alt="отзыв выпускника">
+      <img src="review3.jpg" class="slide" alt="отзыв выпускника">
+      <img src="review4.jpg" class="slide" alt="отзыв выпускника">
+      <img src="review5.jpg" class="slide" alt="отзыв выпускника">
+      <!-- germiona/Mrs: добавлять новые отзывы — просто <img src="reviewN.jpg" class="slide"> сюда -->
+    </div>
+    <div class="slider-nav">
+      <button class="snav" type="button" onclick="slideMove(-1)">←</button>
+      <span class="scount" id="scount">1 / 5</span>
+      <button class="snav" type="button" onclick="slideMove(1)">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- ЦЕНА -->
+<section class="wrap" id="price">
+  <div class="timer-wrap">
+    <div class="timer-lbl">До конца ранней цены 28 990 ₽</div>
+    <div class="timer">
+      <div class="tcell"><div class="tn" id="t-d">00</div><div class="tl">дней</div></div>
+      <div class="tcell"><div class="tn" id="t-h">00</div><div class="tl">часов</div></div>
+      <div class="tcell"><div class="tn" id="t-m">00</div><div class="tl">минут</div></div>
+      <div class="tcell"><div class="tn" id="t-s">00</div><div class="tl">секунд</div></div>
+    </div>
+  </div>
+  <div class="price-bg">
+    <div class="tier">Интенсив «AI-команда»</div>
+    <div class="old">34 990 ₽</div>
+    <div class="now">28 990 ₽</div>
+    <div class="deadline">Ранняя цена до 1 августа · старт 3 августа</div>
+    <div style="color:#c7c2b6;font-size:14px;margin:-14px 0 24px">🔥 Поток ограничен — берём небольшую группу, чтобы успеть разобрать каждого на Zoom</div>
+    <ul>
+      <li>Предобучение + 5 основных уроков + продвинутый трек (записи)</li>
+      <li>3 живых Zoom-сопровождения</li>
+      <li>Готовый репозиторий агента (clone-and-run)</li>
+      <li>Закрытый чат потока</li>
+      <li>Библиотека шаблонов агентов и скиллов</li>
+      <li>Гарантия: минимум 1 рабочий агент</li>
+    </ul>
+    <!-- germiona: заменить href на платёжную ссылку Prodamus (28990) -->
+    <a href="https://payform.ru/mrbKtEd/" target="_blank" rel="noopener" class="btn">Занять место — 28 990 ₽</a>
+    <div class="pay-note">Оплата через Prodamus · разовый платёж · доступ к записям остаётся</div>
+  </div>
+</section>
+
+<!-- ГАРАНТИЯ -->
+<section class="wrap">
+  <div class="guarantee">
+    <div class="ic">🛡️</div>
+    <div>
+      <h3>Гарантия результата</h3>
+      <p>К концу интенсива у тебя работает минимум один живой агент в Telegram. Если прошёл все уроки и Zoom, делал по шагам, а агента нет — разбираемся лично, пока не заработает. Цель — мини-команда 2–3 агента.</p>
+    </div>
+  </div>
+</section>
+
+<!-- АВТОР -->
+<section class="wrap">
+  <div class="author">
+    <img src="author.jpg" class="ph" style="min-height:300px" alt="Дулма Буянтуева">
+    <div>
+      <h2 class="sec-h">Кто <i class="g">ведёт</i></h2>
+      <div class="stats">
+        <div><div class="n">35 000+</div><div class="l">подписчиков</div></div>
+        <div><div class="n">400+</div><div class="l">ученика прошли обучение</div></div>
+        <div><div class="n">5</div><div class="l">агентов в моей команде</div></div>
+      </div>
+      <p>Я не программист. Но у меня работает команда из пяти агентов: ведут контент, отвечают в каналах, держат память и помогают с запусками. Собрала их сама — по тем же шагам, что даю на интенсиве. Если смогла я, сможешь и ты.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="wrap">
+  <h2 class="sec-h">Вопросы</h2>
+  <details><summary>Я не программист. У меня получится?</summary><p>Да — интенсив для не-кодеров. Ты не пишешь код, а по шагам подключаешь готовые части. На каждой неделе живой Zoom, где вместе чиним затыки. Гарантия — к концу минимум 1 рабочий агент.</p></details>
+  <details><summary>Сколько стоит содержать агента?</summary><p>Реально — от 5–10 тыс ₽/мес: VPN на сервере + подписка Claude или ChatGPT ($20–100). Не 200$ и не штат специалистов за сотни тысяч. На уроке покажу варианты под твой бюджет.</p></details>
+  <details><summary>А если Claude заблокируют в России?</summary><p>В программе есть смена движка одной строкой: агент переключается на другую модель и продолжает работать. Память живёт на твоей стороне — ничего не теряется.</p></details>
+  <details><summary>Сколько времени нужно в неделю?</summary><p>Пара часов: посмотреть урок (13–16 мин) + сделать практику + прийти на Zoom. Всё по шагам.</p></details>
+  <details><summary>Чем интенсив отличается от практикума за 990₽?</summary><p>Практикум (запись) — про Claude.ai, проекты и автоворонки. Интенсив — про сборку собственной команды агентов на Claude Code: своё окружение, репозиторий, память, каналы. Это следующая ступень.</p></details>
+  <details><summary>Что если не получится / передумаю?</summary><p>Если прошёл уроки и Zoom, делал по шагам, а результата нет — разбираемся лично. Условия возврата — по оферте.</p></details>
+</section>
+
+<!-- ФИНАЛ -->
+<section class="wrap">
+  <div class="final-bg">
+    <h2>Через 4 недели — <i class="g">твоя команда агентов</i></h2>
+    <p>Рутина больше не съедает день. Контент, ответы клиентам, воронка — на агентах. Ты — в своём деле.</p>
+    <a href="https://payform.ru/mrbKtEd/" target="_blank" rel="noopener" class="btn">Занять место — 28 990 ₽</a>
+  </div>
+</section>
+
+<footer class="wrap">
+  <!-- Mrs/germiona: подставить реквизиты ИП и ссылки на документы (как на сайте практикума) -->
+  ИП Буянтуева Дулма Булатовна · ИНН 031002373055 · ОГРНИП 323030000012701 · dulma_buyantueva@mail.ru<br>
+  <a href="/docs/policy.pdf" style="color:#9a958a">Политика конфиденциальности</a> · <a href="/docs/offer.pdf" style="color:#9a958a">Оферта</a> · <a href="/docs/consent-data.pdf" style="color:#9a958a">Согласие на обработку данных</a> · <a href="/docs/consent-marketing.pdf" style="color:#9a958a">Согласие на рекламные материалы</a><br>
+  © 2026 Дулма Буянтуева
+</footer>
+
+<script>
+  let sIdx=0;
+  function slideMove(d){
+    const s=document.querySelectorAll('.slide');
+    if(!s.length)return;
+    s[sIdx].classList.remove('active');
+    sIdx=(sIdx+d+s.length)%s.length;
+    s[sIdx].classList.add('active');
+    document.getElementById('scount').textContent=(sIdx+1)+' / '+s.length;
+  }
+
+  // Таймер до окончания ранней цены — 1 августа 2026, 23:59 МСК (UTC+3)
+  const DEADLINE=new Date('2026-08-01T23:59:00+03:00').getTime();
+  function pad(n){return String(n).padStart(2,'0');}
+  function tick(){
+    const diff=DEADLINE-new Date().getTime();
+    const w=document.querySelector('.timer-wrap');
+    if(diff<=0){if(w)w.innerHTML='<div class="timer-lbl">Ранняя цена закрыта</div>';return;}
+    const d=Math.floor(diff/86400000);
+    const h=Math.floor(diff%86400000/3600000);
+    const m=Math.floor(diff%3600000/60000);
+    const s=Math.floor(diff%60000/1000);
+    const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=pad(v);};
+    set('t-d',d);set('t-h',h);set('t-m',m);set('t-s',s);
+  }
+  tick();setInterval(tick,1000);
+</script>
+
+</body>
+</html>
