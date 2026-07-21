@@ -174,6 +174,39 @@
 
   footer{padding:46px 0;color:#9a958a;font-size:13px;text-align:center;line-height:1.8}
 
+  /* тарифы */
+  .tariffs{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;margin:0 auto}
+  .tcard{border-radius:24px;padding:34px 30px;display:flex;flex-direction:column}
+  .tcard.base{background:var(--soft);border:1.5px solid var(--line)}
+  .tcard.vip{background:radial-gradient(120% 120% at 50% 0%,#221c0a,var(--dark) 70%);color:#fff;border:1.5px solid var(--golddark)}
+  .tcard .tname{font-weight:800;letter-spacing:1.5px;text-transform:uppercase;font-size:13px;margin-bottom:12px}
+  .tcard.base .tname{color:var(--golddark)}
+  .tcard.vip .tname{color:var(--gold)}
+  .tcard .told{text-decoration:line-through;font-size:20px;font-weight:700}
+  .tcard.base .told{color:#a39d8f}
+  .tcard.vip .told{color:#7d7868}
+  .tcard .tnow{font-size:46px;font-weight:800;margin:2px 0 4px}
+  .tcard .tinst{font-size:14px;margin-bottom:6px}
+  .tcard.base .tinst{color:var(--muted)}
+  .tcard.vip .tinst{color:#c7c2b6}
+  .tcard .tdl{font-size:13px;font-weight:700;margin-bottom:20px}
+  .tcard.base .tdl{color:var(--golddark)}
+  .tcard.vip .tdl{color:var(--gold2)}
+  .tcard ul{list-style:none;margin-bottom:24px;flex:1}
+  .tcard li{padding:8px 0 8px 28px;position:relative;font-size:15.5px}
+  .tcard.base li{color:#3a3833}
+  .tcard.vip li{color:#ece8df}
+  .tcard li:before{content:'';position:absolute;left:0;top:8px;width:17px;height:17px;border-radius:50%;background:linear-gradient(110deg,var(--gold2),var(--gold))}
+  .tcard li:after{content:'✓';position:absolute;left:4px;top:6px;color:#141414;font-size:11px;font-weight:800}
+  .tcard .seats{display:inline-block;background:linear-gradient(110deg,var(--gold2),var(--gold));color:#141414;font-weight:800;font-size:12px;letter-spacing:.5px;text-transform:uppercase;padding:5px 12px;border-radius:999px;margin-bottom:14px;align-self:flex-start}
+  .tcard .btn{width:100%;text-align:center}
+  /* вайбкодинг */
+  .vibe-list{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .vibe{display:flex;gap:14px;align-items:flex-start;background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+  .vibe .vn{font-size:22px;font-weight:800;background:linear-gradient(120deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;min-width:26px}
+  .vibe p{font-size:15px;color:#3a3833}
+  .vibe p b{color:var(--ink)}
+
   @media(max-width:780px){
     .hero{grid-template-columns:1fr;gap:28px;padding:40px 0 44px}
     .hero h1{font-size:38px}
@@ -188,6 +221,7 @@
     .sec-h{font-size:29px}
     .hero h1,.final-bg h2{font-size:34px}
     .price-bg .now{font-size:48px}
+    .tariffs,.vibe-list{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -294,6 +328,20 @@
   <div style="background:radial-gradient(120% 130% at 50% 0%,#221c0a,#0d0d0d 70%);border-radius:22px;padding:30px 32px;margin-top:18px;color:#fff">
     <h3 style="font-size:22px;color:#fff;margin-bottom:10px">И главное — ты умеешь собрать <i class="g">любого своего</i> агента</h3>
     <p style="color:#c7c2b6;font-size:16px">Финальный урок даёт рецепт, по которому ты соберёшь агента под ЛЮБУЮ задачу — себе или на продажу клиенту: бриф → бот → личность (CLAUDE.md) → навыки и знания → запуск. Хочешь финансиста, продажника, поддержку под свою нишу — собираешь сам за вечер. Это уже не обучение, а твой новый навык, на котором можно зарабатывать.</p>
+  </div>
+</section>
+
+<!-- ЧТО СОБЕРЁШЬ РУКАМИ АГЕНТА (вайбкодинг) -->
+<section class="wrap">
+  <h2 class="sec-h">Что соберёшь <i class="g">руками агента</i></h2>
+  <p class="sec-sub">Вайбкодинг — описываешь словами, что нужно, а агент собирает. Всё на российской инфраструктуре, по закону РФ.</p>
+  <div class="vibe-list">
+    <div class="vibe"><div class="vn">1</div><p><b>Свой сайт или лендинг.</b> Описываешь словами → агент собирает страницу → публикуем на российском хостинге. Без верстальщика.</p></div>
+    <div class="vibe"><div class="vn">2</div><p><b>Живой дашборд из Google-таблицы.</b> Выручка, расходы, налог, прибыль — считает сам и обновляется, когда меняешь цифры в таблице.</p></div>
+    <div class="vibe"><div class="vn">3</div><p><b>Telegram-агент под задачу.</b> Отвечает клиентам, ведёт контент, собирает заявки — круглосуточно.</p></div>
+    <div class="vibe"><div class="vn">4</div><p><b>Веб-инструмент под нишу.</b> Калькулятор или квиз-форма — заявки клиентов падают прямо в твою таблицу.</p></div>
+    <div class="vibe"><div class="vn">5</div><p><b>Автосвязка сервисов.</b> Заявка с сайта → в таблицу → уведомление в Telegram. Рутина соединяется сама.</p></div>
+    <div class="vibe"><div class="vn">✦</div><p><b>И навык собрать любой другой.</b> Поняв принцип, делаешь под свою задачу — себе или на заказ клиенту.</p></div>
   </div>
 </section>
 
@@ -509,7 +557,7 @@
 <!-- ЦЕНА -->
 <section class="wrap" id="price">
   <div class="timer-wrap">
-    <div class="timer-lbl">До конца ранней цены 28 990 ₽</div>
+    <div class="timer-lbl">До конца ранней цены — 26 июля</div>
     <div class="timer">
       <div class="tcell"><div class="tn" id="t-d">00</div><div class="tl">дней</div></div>
       <div class="tcell"><div class="tn" id="t-h">00</div><div class="tl">часов</div></div>
@@ -517,24 +565,44 @@
       <div class="tcell"><div class="tn" id="t-s">00</div><div class="tl">секунд</div></div>
     </div>
   </div>
-  <div class="price-bg">
-    <div class="tier">Интенсив «AI-команда»</div>
-    <div class="old">34 990 ₽</div>
-    <div class="now">28 990 ₽</div>
-    <div class="deadline">Ранняя цена до 1 августа · старт 3 августа</div>
-    <div style="color:#c7c2b6;font-size:14px;margin:-14px 0 24px">🔥 Поток ограничен — берём небольшую группу, чтобы успеть разобрать каждого на Zoom</div>
-    <ul>
-      <li>Предобучение + 5 основных уроков + продвинутый трек (записи)</li>
-      <li>3 живых Zoom-сопровождения</li>
-      <li>Готовый репозиторий агента (clone-and-run)</li>
-      <li>Закрытый чат потока</li>
-      <li>Библиотека шаблонов агентов и скиллов</li>
-      <li>Гарантия: минимум 1 рабочий агент</li>
-    </ul>
-    <!-- germiona: заменить href на платёжную ссылку Prodamus (28990) -->
-    <a href="https://payform.ru/mrbKtEd/" target="_blank" rel="noopener" class="btn">Занять место — 28 990 ₽</a>
-    <div class="pay-note">Оплата через Prodamus · разовый платёж · доступ к записям остаётся</div>
+  <div class="tariffs">
+    <div class="tcard base">
+      <div class="tname">Тариф 1 · Базовый</div>
+      <div class="told">34 990 ₽</div>
+      <div class="tnow">28 990 ₽</div>
+      <div class="tinst">или ~4 830 ₽/мес — рассрочка 6 мес, 0%</div>
+      <div class="tdl">Ранняя цена до 26 июля · старт 3 августа</div>
+      <ul>
+        <li>3 пути обучения: подготовка → база → продвинутый (записи)</li>
+        <li>3 живых групповых Zoom-сопровождения</li>
+        <li>Вайбкодинг: собираешь сайт, дашборд и инструменты руками агента</li>
+        <li>Готовый репозиторий агента (clone-and-run)</li>
+        <li>Закрытый чат потока</li>
+        <li>Библиотека шаблонов агентов и скиллов</li>
+        <li>Гарантия: минимум 1 рабочий агент</li>
+      </ul>
+      <!-- germiona: платёжная ссылка Prodamus базового (28990) -->
+      <a href="https://payform.ru/mrbKtEd/" target="_blank" rel="noopener" class="btn">Занять место — 28 990 ₽</a>
+    </div>
+    <div class="tcard vip">
+      <div class="tname">Тариф 2 · VIP</div>
+      <span class="seats">🔥 всего 5 мест</span>
+      <div class="told">59 990 ₽</div>
+      <div class="tnow">49 990 ₽</div>
+      <div class="tinst">или ~8 330 ₽/мес — рассрочка 6 мес, 0%</div>
+      <div class="tdl">Ранняя цена до 26 июля · старт 3 августа</div>
+      <ul>
+        <li>Всё из базового тарифа</li>
+        <li>Личные Zoom-разборы 1-на-1 — собираем твоего агента под твою задачу</li>
+        <li>Индивидуальный разбор твоего дела и ниши</li>
+        <li>Шаблоны: ТЗ, оффер, договор</li>
+        <li>Каталог AI-услуг с ценами — что можно предлагать клиентам</li>
+      </ul>
+      <!-- germiona: заменить на отдельную ссылку Prodamus для VIP (49990). Пока — связь в Telegram -->
+      <a href="https://t.me/dulmaAi" target="_blank" rel="noopener" class="btn">Занять VIP-место — 49 990 ₽</a>
+    </div>
   </div>
+  <div class="pay-note" style="text-align:center;color:#8e887b;font-size:13px;margin-top:20px">Оплата через Prodamus · рассрочка 6 мес 0% · доступ к записям остаётся</div>
 </section>
 
 <!-- ГАРАНТИЯ -->
@@ -602,8 +670,8 @@
     document.getElementById('scount').textContent=(sIdx+1)+' / '+s.length;
   }
 
-  // Таймер до окончания ранней цены — 1 августа 2026, 23:59 МСК (UTC+3)
-  const DEADLINE=new Date('2026-08-01T23:59:00+03:00').getTime();
+  // Таймер до окончания ранней цены — 26 июля 2026, 23:59 МСК (UTC+3)
+  const DEADLINE=new Date('2026-07-26T23:59:00+03:00').getTime();
   function pad(n){return String(n).padStart(2,'0');}
   function tick(){
     const diff=DEADLINE-new Date().getTime();
